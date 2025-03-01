@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-
-
-
- 
 <body>
     <div class="container">
         <h1>💰 Get ₹1000 Off & Earn ₹1000! 💰</h1>
@@ -46,8 +42,10 @@
         <p>📞 <strong>Phone (WhatsApp):</strong> 9080009221</p>
     </div>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <script>
       const firebaseConfig = {
           apiKey: "AIzaSyBeBkR6WpXalLxuJRwRq4ZXSYtSKVQ1Zjo",
@@ -60,13 +58,16 @@
           measurementId: "G-C4CKH4EHJB"
       };
 
+      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       var db = firebase.firestore();
 
+      // Form submission
       document.getElementById('referral-form').addEventListener('submit', function(event) {
           event.preventDefault();
           var email = document.getElementById('referral-email').value;
 
+          // Adding data to Firestore
           db.collection("referrals").add({
               email: email,
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -78,5 +79,6 @@
               console.error("Error saving referral: ", error);
           });
       });
+    </script>
 </body>
 </html>
