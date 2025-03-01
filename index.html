@@ -11,42 +11,18 @@
     <div class="container">
         <h1>💰 Get ₹1000 Off & Earn ₹1000! 💰</h1>
         <h2>Refer & Earn - Help Students Succeed in Class 10 Math!</h2>
-        <p>Join our <strong>TN State Board Class 10 Math Classes</strong>, taught by expert tutor <strong>Sarvesh</strong>. Refer to a child - the best guidance for excelling in the board exams!</p>
-        
-        <h3>About the Course</h3>
-        <p>💡 <strong>Online sessions by Sarvesh</strong> - Statistics graduate and Data Scientist.</p>
-        <p>⏳ <strong>1-hour sessions, 3 days a week</strong> to ensure conceptual clarity.</p>
-        <p>📅 <strong>Course Timeline:</strong> April 15, 2025 - Dec 24, 2025</p>
-        <p>📘 <strong>Complete Class 10 Math Syllabus Covered</strong></p>
-        
-        <h3>About Sarvesh</h3>
-        <p>🎓 MSc in Statistics from IIT Kanpur with 2 years of experience as a Data Scientist.</p>
-        <p>✅ Scored <strong>100% in Mathematics</strong> in Class 10 & Class 12 TN Board.</p>
-        <p><img src="sarvesh-profile.jpg" alt="Sarvesh's Profile Picture" width="150"></p>
-        <p><a href="sarvesh-resume.pdf" download>📄 Download My Resume</a></p>
-        
-        <h3>Course Price</h3>
-        <p>💰 <strong>₹14,999</strong> for the entire year</p>
-        <p>🔄 <strong>Refund Policy:</strong> Full refund if the tutor cancels before the start or if performance is unsatisfactory.</p>
-        
-        <h3>Refer & Earn!</h3>
-        <p>💵 <strong>Earn ₹1000</strong> for every friend who joins!</p>
-        <p>🎁 Your friend gets <strong>₹1000 off</strong> when they use your referral code!</p>
-        
         <form id="referral-form">
             <input type="email" id="referral-email" placeholder="Enter Your Email to Get Your Referral Code" required>
             <button type="submit">Generate Referral Code</button>
         </form>
-        
-        <h3>Contact</h3>
-        <p>📞 <strong>Phone (WhatsApp):</strong> 9080009221</p>
     </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Modular SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"></script>
 
     <script>
+      // Firebase Configuration
       const firebaseConfig = {
           apiKey: "AIzaSyBeBkR6WpXalLxuJRwRq4ZXSYtSKVQ1Zjo",
           authDomain: "referral-20569.firebaseapp.com",
@@ -59,25 +35,31 @@
       };
 
       // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      var db = firebase.firestore();
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore(app);
 
       // Form submission
-      document.getElementById('referral-form').addEventListener('submit', function(event) {
+      document.getElementById('referral-form').addEventListener('submit', async function(event) {
           event.preventDefault();
-          var email = document.getElementById('referral-email').value;
+          const email = document.getElementById('referral-email').value;
+          
+          // Validate Email
+          if (!email || !/\S+@\S+\.\S+/.test(email)) {
+              alert("Please enter a valid email.");
+              return;
+          }
 
-          // Adding data to Firestore
-          db.collection("referrals").add({
-              email: email,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          })
-          .then(() => {
+          try {
+              // Add to Firestore
+              await db.collection("referrals").add({
+                  email: email,
+                  timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              });
+
               alert("You will receive an email with your referral code and payment link soon!");
-          })
-          .catch((error) => {
+          } catch (error) {
               console.error("Error saving referral: ", error);
-          });
+          }
       });
     </script>
 </body>
